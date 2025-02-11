@@ -15,6 +15,10 @@
     "type": "git",
     "url": "git+https://github.com/dkcodelab/grxpc.git"
   },
+  "dependencies": {
+    "grpc-web": "^1.5.0",
+    "rxjs": "^7.8.1"
+  },
   "devDependencies": {
     "@types/node": "^22.13.1",
     "typescript": "^5.7.3"
