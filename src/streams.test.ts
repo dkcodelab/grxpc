@@ -66,6 +66,7 @@ describe('streams', () => {
       clientStream.send('data', 2);
       clientStream.send('data', -800);
       expect(eventsData).toEqual([5, 99.2, 2, -800]);
+      terminate$.next();
     });
   });
 });
