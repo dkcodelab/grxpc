@@ -12,7 +12,7 @@ describe('streams', () => {
       clientStream = new ClientReadableStream();
     });
 
-    it('should send correct data on events', (done) => {
+    it('should send correct data on events by their type', (done) => {
       grpcStreamToObservable<string>(clientStream as any)
         .pipe(takeUntil(terminate$))
         .subscribe((event) => {
@@ -50,6 +50,22 @@ describe('streams', () => {
       expect(removeListenerSpy).toHaveBeenCalledTimes(5);
 
       terminate$.next();
+    });
+
+    it('should be able to pass data multiple times', () => {
+      const eventsData: number[] = [];
+      grpcStreamToObservable<number>(clientStream as any)
+        .pipe(takeUntil(terminate$))
+        .subscribe((event) => {
+          if (event.type === 'data') {
+            eventsData.push(event.data);
+          }
+        });
+      clientStream.send('data', 5);
+      clientStream.send('data', 99.2);
+      clientStream.send('data', 2);
+      clientStream.send('data', -800);
+      expect(eventsData).toEqual([5, 99.2, 2, -800]);
     });
   });
 });
